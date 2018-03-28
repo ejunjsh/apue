@@ -1,0 +1,8 @@
+bin/
+*.o
+*.a
+core 
+core.* 
+*.o 
+temp.* 
+*.out
