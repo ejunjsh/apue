@@ -1,4 +1,4 @@
-DIRS = chapter01
+DIRS = chapter01 chapter02 chapter02/exercises
 
 
 
