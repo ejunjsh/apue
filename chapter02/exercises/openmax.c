@@ -25,5 +25,7 @@ open_max(void)
 int
 main(int argc, char *argv[])
 {
+	printf("sysconf(_SC_OPEN_MAX) is %ld \n",sysconf(_SC_OPEN_MAX));
+	printf("LONG_MAX %ld \n",LONG_MAX);
     printf("openmax is %ld \n",open_max());
 }
