@@ -15,10 +15,10 @@ MOREPROGS = ftw8
 all:	$(PROGS) $(MOREPROGS)
 
 %:	%.c $(LIBAPUE)
-	$(CC) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) $@.c -o $(ROOT)/bin/$@ $(LDFLAGS) $(LDLIBS)
 
 ftw8:	ftw8.c $(LIBAPUE)
-	$(CC) $(CFLAGS) $(NAMEMAX) ftw8.c -o ftw8 $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) $(NAMEMAX) ftw8.c -o $(ROOT)/bin/ftw8 $(LDFLAGS) $(LDLIBS)
 
 clean:
 	rm -f $(PROGS) $(MOREPROGS) $(TEMPFILES) *.o $(ZAP)
