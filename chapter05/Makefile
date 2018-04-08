@@ -8,7 +8,7 @@ else
   MEMSTR =
 endif
 
-PROGS =	buf fgetsfputs getcharbug getcputc mkstemp tempfiles
+PROGS =	buf fgetsfputs getcputc mkstemp tempfiles
 
 all:	$(PROGS) $(MEMSTR)
 
