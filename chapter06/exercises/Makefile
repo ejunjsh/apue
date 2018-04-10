@@ -2,19 +2,35 @@ ROOT=../..
 PLATFORM=$(shell $(ROOT)/systype.sh)
 include $(ROOT)/Make.defines.$(PLATFORM)
 
-ifeq "$(PLATFORM)" "freebsd"
-  FMEMOPEN = fmemopen.o
+
+ifeq "$(PLATFORM)" "linux"
+  shadow = getpwsvr4
 else
-	ifeq "$(PLATFORM)" "macos"
-		FMEMOPEN = fmemopen.o
-	else
-		FMEMOPEN =
-	endif
+  shadow =
 endif
 
-all:	$(FMEMOPEN) getcharbug.o mysetbuf.o
+ifeq "$(PLATFORM)" "solaris"
+  shadow = getpwsvr4
+else
+  shadow =
+endif
 
+ifeq "$(PLATFORM)" "freebsd"
+  shadow = getpw44bsd
+else
+  shadow =
+endif
 
+ifeq "$(PLATFORM)" "macos"
+  shadow = getpw44bsd
+else
+  shadow =
+endif
+
+all:	mydate myuname $(shadow)
+
+%:	%.c $(LIBAPUE)
+	$(CC) $(CFLAGS) $@.c -o $(ROOT)/bin/$@ $(LDFLAGS) $(LDLIBS)
 
 clean:
 	rm -f  $(TEMPFILES) *.o 
