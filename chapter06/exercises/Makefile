@@ -5,26 +5,18 @@ include $(ROOT)/Make.defines.$(PLATFORM)
 
 ifeq "$(PLATFORM)" "linux"
   shadow = getpwsvr4
-else
-  shadow =
 endif
 
 ifeq "$(PLATFORM)" "solaris"
   shadow = getpwsvr4
-else
-  shadow =
 endif
 
 ifeq "$(PLATFORM)" "freebsd"
   shadow = getpw44bsd
-else
-  shadow =
 endif
 
 ifeq "$(PLATFORM)" "macos"
   shadow = getpw44bsd
-else
-  shadow =
 endif
 
 all:	mydate myuname $(shadow)
