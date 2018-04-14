@@ -5,6 +5,7 @@ chapter04 chapter04/exercises \
 chapter05 chapter05/exercises \
 chapter06 chapter06/exercises \
 chapter07 chapter07/exercises \
+chapter08
 
 
 all: bin
