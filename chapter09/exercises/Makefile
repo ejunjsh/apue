@@ -3,7 +3,7 @@ PLATFORM=$(shell $(ROOT)/systype.sh)
 include $(ROOT)/Make.defines.$(PLATFORM)
 
 
-all:	vfork2 vfork3 wait2 exec3.c zombie close_on_exec
+all:	setsid
 
 %:	%.c $(LIBAPUE)
 	$(CC) $(CFLAGS) $@.c -o $(ROOT)/bin/$@ $(LDFLAGS) $(LDLIBS)
