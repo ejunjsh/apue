@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	} else
 	if (pid == 0) {
-		// Wait for the parent to die.
+		/* Wait for the parent to die.*/
 		while (getppid() != 1) {
 			printf("Waiting for parent to die.\n");
 			sleep(1);
