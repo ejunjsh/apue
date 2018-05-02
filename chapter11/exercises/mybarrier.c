@@ -104,7 +104,8 @@ int main() {
         err_exit(err, "Couldn't init barrier");
     }
 
-    for (int i = 0; i < NTHREADS; ++i) {
+    int i;
+    for (i = 0; i < NTHREADS; ++i) {
         err = pthread_create(&threads[i], NULL, thread, &barrier);
         if (err != 0)
             err_exit(err, "Can't create thread %d", i);
@@ -114,7 +115,7 @@ int main() {
     my_barrier_wait(&barrier);
     printf("Main thread (%lu): after wait for barrier\n", (unsigned long)pthread_self());
 
-    for (int i = 0; i < NTHREADS; ++i) {
+    for (i = 0; i < NTHREADS; ++i) {
         err = pthread_join(threads[i], NULL);
         if (err != 0)
             err_exit(err, "Can't join thread %d", i);

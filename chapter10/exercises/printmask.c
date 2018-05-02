@@ -9,7 +9,8 @@ int main(int argc, char *argv[]) {
         err_sys("sigprocmask error");
     }
 
-    for (int i = 0; i < NSIG; i++) {
+    int i;
+    for (i = 0; i < NSIG; i++) {
         if (sigismember(&sigset, i))
             printf("%s ", sys_siglist[i]);
     }

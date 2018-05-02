@@ -27,7 +27,7 @@ queue_init(struct queue *qp)
 {
     int err;
 
-    // Initialize condition and its mutex.
+    /* Initialize condition and its mutex.*/
     err = pthread_cond_init(&qp->qready, NULL);
     if (err != 0)
         return err;
@@ -59,7 +59,7 @@ job_insert(struct queue *qp, struct job *jp)
         qp->q_tail = jp;    /* list was empty */
     qp->q_head = jp;
     pthread_rwlock_unlock(&qp->q_lock);
-    // Signal workers.
+    /* Signal workers.*/
     pthread_cond_broadcast(&qp->qready);
 }
 
@@ -78,7 +78,7 @@ job_append(struct queue *qp, struct job *jp)
         qp->q_head = jp;    /* list was empty */
     qp->q_tail = jp;
     pthread_rwlock_unlock(&qp->q_lock);
-    // Signal workers.
+    /* Signal workers.*/
     pthread_cond_broadcast(&qp->qready);
 }
 
@@ -134,14 +134,14 @@ worker_thread(void *arg)
     struct queue *qp = (struct queue *)arg;
     struct job *jp;
 
-    // Wait on condition...
+    /* Wait on condition...*/
     pthread_mutex_lock(&qp->cond_lock);
     while (true) {
         pthread_cond_wait(&qp->qready, &qp->cond_lock);
-        // When signalled, try to find a job for itself.
+        /* When signalled, try to find a job for itself.*/
         printf("Thread %lu: Was waken up..", (unsigned long)pthread_self());
         jp = job_find(qp, pthread_self());
-        // If found, do stuff, remove job.
+        /* If found, do stuff, remove job.*/
         if (jp) {
             printf("  Got a job, doing stuff..");
             job_remove(qp, jp);
@@ -165,19 +165,20 @@ int main() {
 
     srandom(time(NULL));
 
-    // Init queue.
+    /* Init queue.*/
     err = queue_init(&queue);
     if (err != 0)
         err_exit(err, "can't init queue");
 
-    // Launch a bunch of threads.
-    for (int i = 0; i < NTHREADS; ++i) {
+    /* Launch a bunch of threads.*/
+    int i;
+    for (i = 0; i < NTHREADS; ++i) {
         err = pthread_create(&threads[i], NULL, worker_thread, &queue);
         if (err != 0)
             err_exit(err, "can't create thread %d", i);
     }
 
-    // Add a few jobs.
+    /* Add a few jobs.*/
     while (true) {
         jp = malloc(sizeof(struct job));
         next_worker_tid = threads[random() % NTHREADS];

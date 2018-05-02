@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 
 	FILE *f = fopen("blah", "wb+");
 
-	alarm(1); // Make sure this is shorter than how long the fwrite takes
+	alarm(1); /* Make sure this is shorter than how long the fwrite takes*/
 
 	int written = fwrite(buf, 1, BUFSIZE, f);
 
