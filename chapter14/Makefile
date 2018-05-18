@@ -21,7 +21,7 @@ rot13c2.c:	rot13c2.c.in $(LIBAPUE)
 	sed '1,/same/d' rot13c2.c.in >>rot13c2.c
 
 %:	%.c $(LIBAPUE)
-	$(CC) $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) $@.c -o $(ROOT)/bin/$@ $(LDFLAGS) $(LDLIBS)
 
 clean:
 	rm -f $(PROGS) $(MOREPROGS) $(TEMPFILES) *.o xlate rot13c2.c
