@@ -1,7 +1,13 @@
 ROOT=../..
 PLATFORM=$(shell $(ROOT)/systype.sh)
-EXTRALIBS=-pthread
 include $(ROOT)/Make.defines.$(PLATFORM)
+
+ifeq "$(PLATFORM)" "linux"
+  EXTRALIBS=-lrt
+endif
+ifeq "$(PLATFORM)" "solaris"
+  EXTRALIBS=-lrt
+endif
 
 all: pendlock sizepipe rot13c3 testwritev mcopy3 sleepus_poll.o sleepus_select.o
 
