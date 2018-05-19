@@ -1,10 +1,9 @@
-
 #include "apue.h"
 #include <ctype.h>
 #include <fcntl.h>
 #include <aio.h>
 #include <errno.h>
-#include <stdbool.h>
+
 
 #define BSZ 4096
 #define NBUF 8
@@ -17,6 +16,7 @@ enum rwop {
 
 struct buf {
     enum rwop     op;
+    int           last;
     struct aiocb  aiocb;
     unsigned char data[BSZ];
 };
@@ -26,6 +26,7 @@ struct buf bufs[NBUF];
 unsigned char
 translate(unsigned char c)
 {
+    /* same as before */
     if (isalpha(c)) {
         if (c >= 'n')
             c -= 13;
@@ -42,11 +43,24 @@ translate(unsigned char c)
 int
 main(int argc, char* argv[])
 {
-    int                 ifd, ofd, i, j, n, err, numop;
-    const struct aiocb  *aiolist[NBUF];
+    int                     ifd, ofd, i, j, n, err, numop;
+    struct stat             sbuf;
+    const struct aiocb      *aiolist[NBUF];
+    off_t                   off = 0;
 
+    int                     is_pipe_or_tty = 0;
+
+    if (argc != 1)
+        err_quit("usage: %s", argv[0]);
     ifd = STDIN_FILENO;
     ofd = STDOUT_FILENO;
+    if (fstat(ifd, &sbuf) < 0)
+        err_sys("fstat failed");
+
+    if (sbuf.st_size == 0) {
+        is_pipe_or_tty = 1; 
+    }
+
 
     /* initialize the buffers */
     for (i = 0; i < NBUF; i++) {
@@ -57,7 +71,7 @@ main(int argc, char* argv[])
     }
 
     numop = 0;
-    while (1) {
+    for (;;) {
         for (i = 0; i < NBUF; i++) {
             switch (bufs[i].op) {
             case UNUSED:
@@ -65,15 +79,22 @@ main(int argc, char* argv[])
                  * Read from the input file if more data
                  * remains unread.
                  */
-
+                if (off < sbuf.st_size || is_pipe_or_tty) {
                     bufs[i].op = READ_PENDING;
                     bufs[i].aiocb.aio_fildes = ifd;
+                    bufs[i].aiocb.aio_offset = off;
+                    off += BSZ;
+                    /* TODO how does this work with a pipe...*/
+                    if (off >= sbuf.st_size) {
+                        bufs[i].last = 1;
+                        is_pipe_or_tty = 0; 
+                    }
                     bufs[i].aiocb.aio_nbytes = BSZ;
                     if (aio_read(&bufs[i].aiocb) < 0)
                         err_sys("aio_read failed");
                     aiolist[i] = &bufs[i].aiocb;
                     numop++;
-                
+                }
                 break;
 
             case READ_PENDING:
@@ -92,9 +113,8 @@ main(int argc, char* argv[])
                  */
                 if ((n = aio_return(&bufs[i].aiocb)) < 0)
                     err_sys("aio_return failed");
-                if (n == 0) {
-                    continue;
-                }
+                if (n != BSZ && !bufs[i].last)
+                    err_quit("short read (%d/%d)", n, BSZ);
                 for (j = 0; j < n; j++)
                     bufs[i].data[j] = translate(bufs[i].data[j]);
                 bufs[i].op = WRITE_PENDING;
@@ -102,12 +122,12 @@ main(int argc, char* argv[])
                 bufs[i].aiocb.aio_nbytes = n;
                 if (aio_write(&bufs[i].aiocb) < 0)
                     err_sys("aio_write failed");
+                /* retain our spot in aiolist */
                 break;
 
             case WRITE_PENDING:
-                if ((err = aio_error(&bufs[i].aiocb)) == EINPROGRESS) {
+                if ((err = aio_error(&bufs[i].aiocb)) == EINPROGRESS)
                     continue;
-                }
                 if (err != 0) {
                     if (err == -1)
                         err_sys("aio_error failed");
@@ -128,11 +148,12 @@ main(int argc, char* argv[])
                 break;
             }
         }
-        if (numop != 0) {
+        if (numop == 0) {
+            if (off >= sbuf.st_size)
+                break;
+        } else {
             if (aio_suspend(aiolist, NBUF, NULL) < 0)
                 err_sys("aio_suspend failed");
-        }else{
-            break;
         }
     }
 
