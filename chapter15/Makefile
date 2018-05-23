@@ -7,7 +7,7 @@ PROGS =	add2 add2stdio devzero myuclc pipe1 pipe2 pipe4 popen1 popen2 tshm
 all:	$(PROGS) popen.o slock.o tellwait.o
 
 %:	%.c $(LIBAPUE)
-	$(CC) $(CFLAGS) $@.c -o $(root)/bin/$@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) $@.c -o $(ROOT)/bin/$@ $(LDFLAGS) $(LDLIBS)
 
 slock.o:	slock.c slock.h
 
