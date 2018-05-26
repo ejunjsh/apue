@@ -6,9 +6,10 @@ main(void)
 	int		int1, int2;
 	char	line[MAXLINE];
 
+	/* no need to set buf for stdin.the book lead me to a wrong way.
 	if(setvbuf(stdin,NULL,_IOLBF,0)!=0){
 		err_sys("setvbuf error");
-	}
+	}*/
 	if(setvbuf(stdout,NULL,_IOLBF,0)!=0){
 		err_sys("setvbuf error");
 	}
