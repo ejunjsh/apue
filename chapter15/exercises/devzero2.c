@@ -60,7 +60,7 @@ main(void)
         ops[0].sem_flg = 0;
         for (i = 0; i < NLOOPS; i += 2) {
 
-            // Can parent run?
+            /* Can parent run? */
             ops[0].sem_num = SEM_PARENT;
             ops[0].sem_op = -1;
             semop(semid, ops, 1);
@@ -68,7 +68,7 @@ main(void)
             if ((counter = update((long *)area)) != i)
                 err_quit("parent: expected %d, got %d", i, counter);
 
-            // Allow child to run.
+            /* Allow child to run.*/
             ops[0].sem_num = SEM_CHILD;
             ops[0].sem_op = 1;
             semop(semid, ops, 1);
@@ -78,7 +78,7 @@ main(void)
         ops[0].sem_num = 0;
         ops[0].sem_flg = 0;
         for (i = 1; i < NLOOPS + 1; i += 2) {
-            // Can child run?
+            /* Can child run?*/
             ops[0].sem_num = SEM_CHILD;
             ops[0].sem_op = -1;
             semop(semid, ops, 1);
@@ -86,13 +86,13 @@ main(void)
             if ((counter = update((long *)area)) != i)
                 err_quit("child: expected %d, got %d", i, counter);
 
-            // Allow parent to run.
+            /* Allow parent to run.*/
             ops[0].sem_num = SEM_PARENT;
             ops[0].sem_op = 1;
             semop(semid, ops, 1);
         }
 
-        // Remove semaphore and shared memory.
+        /* Remove semaphore and shared memory.*/
         if(semctl(semid, 0, IPC_RMID)<0){
             err_sys("semctl error");
         }
