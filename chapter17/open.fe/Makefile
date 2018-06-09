@@ -11,7 +11,7 @@ PROGS =	openclient
 all:	$(PROGS)
 
 openclient:	main.o open.o $(LIBAPUE)
-	$(CC) $(CFLAGS) -o openclient main.o open.o $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) -o $(ROOT)/bin/openclient.fe main.o open.o $(LDFLAGS) $(LDLIBS)
 
 clean:
 	rm -f $(PROGS) $(TEMPFILES) *.o

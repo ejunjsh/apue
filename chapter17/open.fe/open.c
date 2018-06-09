@@ -30,7 +30,7 @@ csopen(char *name, int oflag)
 			if (fd[1] != STDOUT_FILENO &&
 			  dup2(fd[1], STDOUT_FILENO) != STDOUT_FILENO)
 				err_sys("dup2 error to stdout");
-			if (execl("./opend", "opend", (char *)0) < 0)
+			if (execl("bin/opend.fe", "opend", (char *)0) < 0)
 				err_sys("execl error");
 		}
 		close(fd[1]);				/* parent */

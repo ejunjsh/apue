@@ -11,7 +11,7 @@ PROGS =	opend
 all:	$(PROGS)
 
 opend:	main.o request.o cliargs.o $(LIBAPUE)
-	$(CC) $(CFLAGS) -o opend main.o cliargs.o request.o $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) -o $(ROOT)/bin/opend.fe main.o cliargs.o request.o $(LDFLAGS) $(LDLIBS)
 
 clean:
 	rm -f $(PROGS) $(TEMPFILES) *.o

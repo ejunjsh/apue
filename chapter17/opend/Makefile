@@ -11,11 +11,11 @@ PROGS = opend.poll opend.select
 all:	$(PROGS)
 
 opend.poll:	main.o request.o cliargs.o client.o loop.poll.o $(LIBAPUE)
-	$(CC) $(CFLAGS) -o opend.poll main.o cliargs.o client.o request.o loop.poll.o \
+	$(CC) $(CFLAGS) -o $(ROOT)/bin/opend.poll main.o cliargs.o client.o request.o loop.poll.o \
 		$(LDFLAGS) $(LDLIBS)
 
 opend.select:	main.o request.o cliargs.o client.o loop.select.o $(LIBAPUE)
-	$(CC) $(CFLAGS) -o opend.select main.o cliargs.o client.o request.o loop.select.o \
+	$(CC) $(CFLAGS) -o $(ROOT)/bin/opend.select main.o cliargs.o client.o request.o loop.select.o \
 		$(LDFLAGS) $(LDLIBS)
 
 clean:
