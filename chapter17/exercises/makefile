@@ -12,7 +12,7 @@ ifeq "$(PLATFORM)" "solaris"
   EXTRALIBS=-lsocket -lnsl
 endif
 
-PROGS = pollmsg2
+PROGS = pollmsg2 passfd
 
 all:	$(PROGS) 
 
