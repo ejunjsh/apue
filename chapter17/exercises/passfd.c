@@ -7,9 +7,8 @@ int main() {
     int pid, fd;
     int fdpair[2];
 
-    if(socketpair(AF_UNIX, SOCK_STREAM, 0, fdpair)<0)
-    {
-        err_sys("socketpair error");
+    if (fd_pipe(fdpair) < 0) {
+        err_sys("fd_pipe error");
     }
 
     TELL_WAIT();
