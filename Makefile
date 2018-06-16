@@ -15,7 +15,8 @@ chapter14 chapter14/exercises \
 chapter15 chapter15/exercises \
 chapter16 chapter16/exercises \
 chapter17 chapter17/exercises \
-chapter18
+chapter18 \
+chapter19
 
 
 all: bin
