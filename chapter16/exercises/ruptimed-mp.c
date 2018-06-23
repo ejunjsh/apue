@@ -24,7 +24,8 @@ serve_many(int sockets[], int nsockets)
     fd_set  init_set, set;
 
     FD_ZERO(&init_set);
-    for (int i = 0; i < nsockets; ++i) {
+    int i=0;
+    for (; i < nsockets; ++i) {
         set_cloexec(sockets[i]);
         FD_SET(sockets[i], &init_set);
         if (sockets[i] > maxsock) {
@@ -36,7 +37,8 @@ serve_many(int sockets[], int nsockets)
     for (;;) {
         set = init_set;
         select(maxsock + 1, &set, NULL, NULL, NULL);
-        for (int i = 0; i < nsockets; ++i) {
+        i = 0;
+        for (; i < nsockets; ++i) {
             if (FD_ISSET(sockets[i], &set)) {
                 if ((clfd = accept(sockets[i], NULL, NULL)) < 0) {
                     syslog(LOG_ERR, "ruptimed: accept error: %s",

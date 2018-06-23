@@ -33,7 +33,8 @@ void send_fds(int sockfd, int fds[], int fds_len) {
     msg.msg_controllen = cmsg->cmsg_len;
 
     printf("my_send_fd: about to send fds:");
-    for (int i = 0; i < fds_len; ++i) printf(" %d", fds[i]);
+    int i;
+    for (i = 0; i < fds_len; ++i) printf(" %d", fds[i]);
     printf("\n");
     if(sendmsg(sockfd, &msg, 0)<0){
         err_sys("sendmsg error");
@@ -108,7 +109,8 @@ int main() {
         int fds_len;
         recv_fds(spair[1], &fds, &fds_len);
         printf("parent: got fds:");
-        for (int i = 0; i < fds_len; ++i) {
+        int i;
+        for (i = 0; i < fds_len; ++i) {
             printf(" %d (fp=%lld)", fds[i], (long long)lseek(fds[i], 0, SEEK_CUR));
         }
         printf("\n");

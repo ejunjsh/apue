@@ -43,7 +43,8 @@ buf_args(char *buf, int (*optfunc)(int, char **))
 
 
 int print(int argc, char *argv[]) {
-    for (int i = 0; i < argc; ++i) {
+    int i;
+    for (i = 0; i < argc; ++i) {
         printf("#%d: %s\n", i, argv[i]);
     }
     return 0;
