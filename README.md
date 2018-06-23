@@ -6,4 +6,6 @@ a repo to rearrange the code and exercises in book.😄
 
     make clean && make
 
-## chapter01
+## run
+
+    bin/...
