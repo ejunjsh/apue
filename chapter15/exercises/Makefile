@@ -2,12 +2,17 @@ ROOT=../..
 PLATFORM=$(shell $(ROOT)/systype.sh)
 include $(ROOT)/Make.defines.$(PLATFORM)
 
-MOREPROGS=devzero4
+ifeq "$(PLATFORM)" "freebsd"
+  EXTRALIBS = -pthread
+endif
 ifeq "$(PLATFORM)" "linux"
-  MOREPROGS=
+  EXTRALIBS = -pthread
+endif
+ifeq "$(PLATFORM)" "solaris"
+  EXTRALIBS = -lpthread
 endif
 
-PROGS =	pipe21 pipe22 15.3 pipe41 selectpipein selectpipeout pollpipein pollpipeout fifo1 mqtest devzero1 devzero2 devzero3 $(MOREPROGS)
+PROGS =	pipe21 pipe22 15.3 pipe41 selectpipein selectpipeout pollpipein pollpipeout fifo1 mqtest devzero1 devzero2 devzero3 devzero4
 
 all:	$(PROGS) 
 
