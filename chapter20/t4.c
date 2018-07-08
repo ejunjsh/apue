@@ -17,7 +17,14 @@ main(void)
 		err_quit("db_store error for beta");
 	if (db_store(db, "gamma", "record3", DB_INSERT) != 0)
 		err_quit("db_store error for gamma");
-
+	if (db_store(db, "test4", "test4", DB_INSERT) != 0)
+		err_quit("db_store error for test4");
+	if (db_delete(db, "test4")!=0)
+		err_quit("db_delete error");
+	if (db_delete(db, "gamma")!=0)
+		err_quit("db_delete error");
+	if (db_delete(db, "Alpha")!=0)
+		err_quit("db_delete error");
 	db_close(db);
 	exit(0);
 }

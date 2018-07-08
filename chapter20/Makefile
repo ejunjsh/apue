@@ -34,7 +34,7 @@ libapue_db.so.1:	db.c $(LIBAPUE)
 
 t4:	$(LIBAPUE)
 		$(CC) $(CFLAGS) -c -I. t4.c
-		$(CC) $(EXTRALD) -o $(ROOT)/bin/t4 t4.o -L$(ROOT)/lib -L. -lapue_db -lapue
+		$(CC) $(EXTRALD) -o t4 t4.o -L$(ROOT)/lib -L. -lapue_db -lapue
 
 clean:
 	rm -f *.o a.out core temp.* $(LIBMISC) t4 libapue_db.so.* *.dat *.idx libapue_db.so
